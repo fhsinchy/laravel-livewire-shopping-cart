@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Product;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,8 +15,10 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
-});
+    $products = Product::all();
+
+    return view('index', compact('products'));
+})->name('index');
 
 Route::get('/dashboard', function () {
     return view('dashboard');
