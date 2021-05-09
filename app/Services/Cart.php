@@ -7,11 +7,24 @@ use Illuminate\Support\Collection;
 
 class Cart {
     private $session;
-    private $instance = 'shopping-cart';
+    private $instance;
+
+    const DEFAULT_INSTANCE = 'shopping-cart';
 
     public function __construct(SessionManager $session)
     {
         $this->session = $session;
+
+        $this->instance(self::DEFAULT_INSTANCE);
+    }
+
+    public function instance($instance = null)
+    {
+        $instance = $instance ?: self::DEFAULT_INSTANCE;
+
+        $this->instance = $instance;
+
+        return $this;
     }
 
     public function add($id, $name, $price, $quantity, $options = [])
@@ -21,7 +34,7 @@ class Cart {
         $content = $this->getContent();
 
         if ($content->has($id)) {
-            $cartItem->put('quantity', $cartItem->get('quantity') + $quantity);
+            $cartItem->put('quantity', $content->get($id)->get('quantity') + $quantity);
         }
 
         $content->put($id, $cartItem);
@@ -56,7 +69,7 @@ class Cart {
 
     public function clear()
     {
-        $this->session->put($this->instance, null);
+        $this->session->forget($this->instance);
     }
 
     protected function getContent() {
