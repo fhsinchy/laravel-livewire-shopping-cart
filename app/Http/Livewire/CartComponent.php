@@ -39,6 +39,12 @@ class CartComponent extends Component
         $this->updateCart();
     }
 
+    public function updateCartItem($id, $action)
+    {
+        Cart::update($id, $action);
+        $this->updateCart();
+    }
+
     public function updateCart()
     {
         $this->total = Cart::total();

@@ -6,6 +6,7 @@ use Illuminate\Support\Collection;
 use Illuminate\Session\SessionManager;
 
 class CartService {
+    const MINIMUM_QUANTITY = 1;
     const DEFAULT_INSTANCE = 'shopping-cart';
 
     protected $session;
@@ -19,23 +20,6 @@ class CartService {
     public function __construct(SessionManager $session)
     {
         $this->session = $session;
-
-        $this->instance(self::DEFAULT_INSTANCE);
-    }
-
-    /**
-     * Returns a new cart instance
-     *
-     * @param string|null $instance
-     * @return App\Services\CartService
-     */
-    public function instance($instance = null): CartService
-    {
-        $instance = $instance ?: self::DEFAULT_INSTANCE;
-
-        $this->instance = $instance;
-
-        return $this;
     }
 
     /**
@@ -60,7 +44,44 @@ class CartService {
 
         $content->put($id, $cartItem);
 
-        $this->session->put($this->instance, $content);
+        $this->session->put(self::DEFAULT_INSTANCE, $content);
+    }
+
+    /**
+     * Updates the quantity of a cart item.
+     *
+     * @param string $id
+     * @param string $action
+     * @return void
+     */
+    public function update(string $id, string $action): void
+    {
+        $content = $this->getContent();
+
+        if ($content->has($id)) {
+            $cartItem = $content->get($id);
+
+            switch ($action) {
+                case 'plus':
+                    $cartItem->put('quantity', $content->get($id)->get('quantity') + 1);
+                    break;
+                case 'minus':
+                    $updatedQuantity = $content->get($id)->get('quantity') - 1;
+
+                    if ($updatedQuantity < self::MINIMUM_QUANTITY) {
+                        $updatedQuantity = self::MINIMUM_QUANTITY;
+                    }
+
+                    $cartItem->put('quantity', $updatedQuantity);
+                    break;
+            }
+
+            $content->put($id, $cartItem);
+
+            $this->session->put(self::DEFAULT_INSTANCE, $content);
+        }
+
+
     }
 
     /**
@@ -69,12 +90,12 @@ class CartService {
      * @param string $id
      * @return void
      */
-    public function remove($id): void
+    public function remove(string $id): void
     {
         $content = $this->getContent();
 
         if ($content->has($id)) {
-            $this->session->put($this->instance, $content->except($id));
+            $this->session->put(self::DEFAULT_INSTANCE, $content->except($id));
         }
     }
 
@@ -85,7 +106,7 @@ class CartService {
      */
     public function content(): Collection
     {
-        return is_null($this->session->get($this->instance)) ? new Collection([]) : $this->session->get($this->instance);
+        return is_null($this->session->get(self::DEFAULT_INSTANCE)) ? new Collection([]) : $this->session->get(self::DEFAULT_INSTANCE);
     }
 
     /**
@@ -111,7 +132,7 @@ class CartService {
      */
     public function clear(): void
     {
-        $this->session->forget($this->instance);
+        $this->session->forget(self::DEFAULT_INSTANCE);
     }
 
     /**
@@ -121,7 +142,7 @@ class CartService {
      */
     protected function getContent(): Collection
     {
-        return $this->session->has($this->instance) ? $this->session->get($this->instance) : new Collection;
+        return $this->session->has(self::DEFAULT_INSTANCE) ? $this->session->get(self::DEFAULT_INSTANCE) : new Collection;
     }
 
     /**
@@ -135,10 +156,17 @@ class CartService {
      */
     protected function createCartItem(string $name, string $price, string $quantity, array $options): Collection
     {
+        $price = floatval($price);
+        $quantity = intval($quantity);
+
+        if ($quantity < self::MINIMUM_QUANTITY) {
+            $quantity = self::MINIMUM_QUANTITY;
+        }
+
         return new Collection([
             'name' => $name,
-            'price' => floatval($price),
-            'quantity' => intval($quantity, 10),
+            'price' => $price,
+            'quantity' => $quantity,
             'options' => $options,
         ]);
     }
