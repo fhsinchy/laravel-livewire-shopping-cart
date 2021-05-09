@@ -22,12 +22,7 @@
         <nav class="p-5 flex justify-between shadow">
             <a class="rounded text-3xl" href="{{ route('index') }}">Shopping Cart</a>
             <div>
-                @auth
-                <a class="p-2 border-2 rounded bg-gray-200 hover:bg-gray-300" href="#">Logout</a>
-                @else
-                <a class="p-2 border-2 rounded bg-gray-200 hover:bg-gray-300" href="{{ route('login') }}">Login</a>
-                <a class="p-2 border-2 rounded bg-gray-200 hover:bg-gray-300" href="{{ route('register') }}">Register</a>
-                @endauth
+                <a class="p-2 border-2 rounded bg-gray-200 hover:bg-gray-300" href="https://github.com/fhsinchy/laravel-livewire-shopping-cart" target="_blank" rel="noopener noreferrer">fhsinchy/laravel-livewire-shopping-cart</a>
             </div>
         </nav>
         <div class="font-sans text-gray-900 antialiased">
