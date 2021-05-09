@@ -7,8 +7,8 @@ use App\Facades\Cart as CartFacade;
 
 class Cart extends Component
 {
-    public $total;
-    public $content;
+    protected $total;
+    protected $content;
 
     protected $listeners = [
         'productAddedToCart' => 'updateCart',
@@ -21,12 +21,9 @@ class Cart extends Component
 
     public function render()
     {
-        $total = CartFacade::total();
-        $content = CartFacade::content();
-
         return view('livewire.cart', [
-            'total' => $total,
-            'content' => $content,
+            'total' => $this->total,
+            'content' => $this->content,
         ]);
     }
 
