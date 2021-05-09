@@ -2,7 +2,6 @@
 
 namespace App\Services;
 
-use App\Objects\CartItem;
 use Illuminate\Session\SessionManager;
 use Illuminate\Support\Collection;
 
@@ -15,17 +14,17 @@ class Cart {
         $this->session = $session;
     }
 
-    public function add($product, $quantity)
+    public function add($id, $price, $quantity, $options = [])
     {
-        $cartItem = $this->createCartItem($product, $quantity);
+        $cartItem = $this->createCartItem($price, $quantity, $options);
 
         $content = $this->getContent();
 
-        if ($content->has($product->id)) {
-            $cartItem->setQuantity($content->get($product->id)->quantity() + $quantity);
+        if ($content->has($id)) {
+            $cartItem->put('quantity', $cartItem->get('quantity') + $quantity);
         }
 
-        $content->put($product->id, $cartItem);
+        $content->put($id, $cartItem);
 
         $this->session->put($this->instance, $content);
     }
@@ -39,7 +38,11 @@ class Cart {
         return $this->session->has($this->instance) ? $this->session->get($this->instance) : new Collection;
     }
 
-    protected function createCartItem($product, $quantity) {
-        return new CartItem($product, $quantity);
+    protected function createCartItem($price, $quantity, $options) {
+        return new Collection([
+            'price' => floatval($price),
+            'quantity' => intval($quantity, 10),
+            'options' => $options,
+        ]);
     }
 }
