@@ -4,6 +4,7 @@ namespace App\Http\Livewire;
 
 use App\Facades\Cart;
 use Livewire\Component;
+use Illuminate\Contracts\View\View;
 
 class CartComponent extends Component
 {
@@ -14,12 +15,22 @@ class CartComponent extends Component
         'productAddedToCart' => 'updateCart',
     ];
 
-    public function mount()
+    /**
+     * Mounts the component on the template.
+     *
+     * @return void
+     */
+    public function mount(): void
     {
         $this->updateCart();
     }
 
-    public function render()
+    /**
+     * Renders the component on the browser.
+     *
+     * @return \Illuminate\Contracts\View\View
+     */
+    public function render(): View
     {
         return view('livewire.cart', [
             'total' => $this->total,
@@ -27,24 +38,47 @@ class CartComponent extends Component
         ]);
     }
 
-    public function removeFromCart($id)
+    /**
+     * Removes a cart item by id.
+     *
+     * @param string $id
+     * @return void
+     */
+    public function removeFromCart(string $id): void
     {
         Cart::remove($id);
         $this->updateCart();
     }
 
-    public function clearCart()
+    /**
+     * Clears the cart content.
+     *
+     * @return void
+     */
+    public function clearCart(): void
     {
         Cart::clear();
         $this->updateCart();
     }
 
-    public function updateCartItem($id, $action)
+    /**
+     * Updates a cart item.
+     *
+     * @param string $id
+     * @param string $action
+     * @return void
+     */
+    public function updateCartItem(string $id, string $action): void
     {
         Cart::update($id, $action);
         $this->updateCart();
     }
 
+    /**
+     * Rerenders the cart items and total price on the browser.
+     *
+     * @return void
+     */
     public function updateCart()
     {
         $this->total = Cart::total();
