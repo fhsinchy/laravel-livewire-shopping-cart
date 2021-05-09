@@ -14,9 +14,9 @@ class Cart {
         $this->session = $session;
     }
 
-    public function add($id, $price, $quantity, $options = [])
+    public function add($id, $name, $price, $quantity, $options = [])
     {
-        $cartItem = $this->createCartItem($price, $quantity, $options);
+        $cartItem = $this->createCartItem($name, $price, $quantity, $options);
 
         $content = $this->getContent();
 
@@ -34,12 +34,24 @@ class Cart {
         return is_null($this->session->get($this->instance)) ? new Collection([]) : $this->session->get($this->instance);
     }
 
+    public function total()
+    {
+        $content = $this->getContent();
+
+        $total = $content->reduce(function ($total, $item) {
+            return $total += $item->price * $item->quantity;
+        });
+
+        return number_format($total, 2);
+    }
+
     protected function getContent() {
         return $this->session->has($this->instance) ? $this->session->get($this->instance) : new Collection;
     }
 
-    protected function createCartItem($price, $quantity, $options) {
+    protected function createCartItem($name, $price, $quantity, $options) {
         return new Collection([
+            'name' => $name,
             'price' => floatval($price),
             'quantity' => intval($quantity, 10),
             'options' => $options,
