@@ -25,14 +25,4 @@ class Product extends Component
         Cart::add($this->product->id, $this->product->name, $this->product->getRawOriginal('price'), $this->quantity);
         $this->emit('productAddedToCart');
     }
-
-    public function removeFromCart()
-    {
-        //
-    }
-
-    public function showCart()
-    {
-        dd(Cart::content());
-    }
 }
