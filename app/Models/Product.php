@@ -13,7 +13,7 @@ class Product extends Model
     // you only live once
     protected $guarded = [];
 
-    public function getPriceAttribute($value)
+    public function getUnitPriceAttribute($value)
     {
         return number_format($value, 2);
     }
