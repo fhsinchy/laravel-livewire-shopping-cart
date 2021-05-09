@@ -29,6 +29,15 @@ class Cart {
         $this->session->put($this->instance, $content);
     }
 
+    public function remove($id)
+    {
+        $content = $this->getContent();
+
+        if ($content->has($id)) {
+            $this->session->put($this->instance, $content->except($id));
+        }
+    }
+
     public function content()
     {
         return is_null($this->session->get($this->instance)) ? new Collection([]) : $this->session->get($this->instance);
@@ -39,10 +48,15 @@ class Cart {
         $content = $this->getContent();
 
         $total = $content->reduce(function ($total, $item) {
-            return $total += $item->price * $item->quantity;
+            return $total += $item->get('price') * $item->get('quantity');
         });
 
         return number_format($total, 2);
+    }
+
+    public function clear()
+    {
+        $this->session->put($this->instance, null);
     }
 
     protected function getContent() {

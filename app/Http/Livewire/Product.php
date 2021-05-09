@@ -22,7 +22,8 @@ class Product extends Component
 
     public function addToCart()
     {
-        Cart::add($this->product->id, $this->product->name, $this->product->price, $this->quantity);
+        Cart::add($this->product->id, $this->product->name, $this->product->getRawOriginal('price'), $this->quantity);
+        $this->emit('productAddedToCart');
     }
 
     public function removeFromCart()

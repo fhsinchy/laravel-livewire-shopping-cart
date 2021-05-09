@@ -9,11 +9,6 @@
                 <livewire:product :product='$product' />
             @endforeach
         </div>
-        <div class="w-1/4">
-            <div class="p-5 mx-2 my-2 max-w-md rounded border-2">
-                <h1 class="text-3xl mb-2">Lorem Ipsum</h1>
-                <p class="text-lg mb-2">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Suscipit, laudantium? Animi nemo modi, assumenda tempore quos recusandae. Autem, dicta animi.</p>
-            </div>
-        </div>
+        <livewire:cart />
     </div>
 </x-guest-layout>
