@@ -2,10 +2,10 @@
 
 namespace App\Services;
 
-use Illuminate\Session\SessionManager;
 use Illuminate\Support\Collection;
+use Illuminate\Session\SessionManager;
 
-class Cart {
+class CartService {
     private $session;
     private $instance;
 

@@ -5,7 +5,7 @@ namespace App\Http\Livewire;
 use App\Facades\Cart;
 use Livewire\Component;
 
-class Product extends Component
+class ProductComponent extends Component
 {
     public $product;
     public $quantity;

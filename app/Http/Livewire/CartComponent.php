@@ -2,10 +2,10 @@
 
 namespace App\Http\Livewire;
 
+use App\Facades\Cart;
 use Livewire\Component;
-use App\Facades\Cart as CartFacade;
 
-class Cart extends Component
+class CartComponent extends Component
 {
     protected $total;
     protected $content;
@@ -29,19 +29,19 @@ class Cart extends Component
 
     public function removeFromCart($id)
     {
-        CartFacade::remove($id);
+        Cart::remove($id);
         $this->updateCart();
     }
 
     public function clearCart()
     {
-        CartFacade::clear();
+        Cart::clear();
         $this->updateCart();
     }
 
     public function updateCart()
     {
-        $this->total = CartFacade::total();
-        $this->content = CartFacade::content();
+        $this->total = Cart::total();
+        $this->content = Cart::content();
     }
 }

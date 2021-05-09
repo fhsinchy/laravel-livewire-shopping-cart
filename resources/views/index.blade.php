@@ -6,9 +6,9 @@
     <div class="flex">
         <div class="flex flex-wrap justify-between w-3/4">
             @foreach ($products as $product)
-                <livewire:product :product='$product' />
+                <livewire:product-component :product='$product' />
             @endforeach
         </div>
-        <livewire:cart />
+        <livewire:cart-component />
     </div>
 </x-guest-layout>

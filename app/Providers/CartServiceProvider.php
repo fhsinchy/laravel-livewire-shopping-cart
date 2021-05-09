@@ -2,7 +2,7 @@
 
 namespace App\Providers;
 
-use App\Services\Cart;
+use App\Services\CartService;
 use Illuminate\Support\ServiceProvider;
 
 class CartServiceProvider extends ServiceProvider
@@ -14,7 +14,7 @@ class CartServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app->bind('Cart', Cart::class);
+        $this->app->bind('Cart', CartService::class);
     }
 
     /**
