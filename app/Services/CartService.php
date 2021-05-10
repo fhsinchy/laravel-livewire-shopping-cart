@@ -80,8 +80,6 @@ class CartService {
 
             $this->session->put(self::DEFAULT_INSTANCE, $content);
         }
-
-
     }
 
     /**
@@ -97,6 +95,16 @@ class CartService {
         if ($content->has($id)) {
             $this->session->put(self::DEFAULT_INSTANCE, $content->except($id));
         }
+    }
+
+    /**
+     * Clears the cart.
+     *
+     * @return void
+     */
+    public function clear(): void
+    {
+        $this->session->forget(self::DEFAULT_INSTANCE);
     }
 
     /**
@@ -123,16 +131,6 @@ class CartService {
         });
 
         return number_format($total, 2);
-    }
-
-    /**
-     * Clears the cart.
-     *
-     * @return void
-     */
-    public function clear(): void
-    {
-        $this->session->forget(self::DEFAULT_INSTANCE);
     }
 
     /**
