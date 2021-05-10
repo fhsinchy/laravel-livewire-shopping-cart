@@ -106,7 +106,7 @@ class CartService {
      */
     public function content(): Collection
     {
-        return is_null($this->session->get(self::DEFAULT_INSTANCE)) ? new Collection([]) : $this->session->get(self::DEFAULT_INSTANCE);
+        return is_null($this->session->get(self::DEFAULT_INSTANCE)) ? collect([]) : $this->session->get(self::DEFAULT_INSTANCE);
     }
 
     /**
@@ -142,7 +142,7 @@ class CartService {
      */
     protected function getContent(): Collection
     {
-        return $this->session->has(self::DEFAULT_INSTANCE) ? $this->session->get(self::DEFAULT_INSTANCE) : new Collection;
+        return $this->session->has(self::DEFAULT_INSTANCE) ? $this->session->get(self::DEFAULT_INSTANCE) : collect([]);
     }
 
     /**
@@ -163,7 +163,7 @@ class CartService {
             $quantity = self::MINIMUM_QUANTITY;
         }
 
-        return new Collection([
+        return collect([
             'name' => $name,
             'price' => $price,
             'quantity' => $quantity,
