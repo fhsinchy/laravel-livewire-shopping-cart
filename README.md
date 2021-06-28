@@ -11,17 +11,13 @@ git clone https://github.com/fhsinchy/laravel-livewire-shopping-cart.git
 
 cd laravel-livewire-shopping-cart
 cp .env.example .env
+touch database/database.sqlite
 
 composer install
 php artisan key:generate
-```
-
-Open up `.env` file in your code editor and configure the database. Finally migrate, seed and start the server.
-
-```sh
 php artisan migrate --seed
 
 php artisan serve
 ```
 
-The application should be available on `http://127.0.0.1:8000` address. If you like my works, you can [buy me a coffee](https://buymeacoffee.com/fhsinchy/).
+The application should be available on `http://127.0.0.1:8000` address. If you like my works, you can [buy me a coffee](https://buymeacoffee.com/farhanhasin/).
